@@ -3,7 +3,8 @@ import logging
 from botToken import myToken
 from discord.ext import commands
 
-client = discord.Client()
+
+bot = commands.Bot(command_prefix='.')
 
 ### LOGGER ###
 logger = logging.getLogger('discord')
@@ -13,13 +14,13 @@ handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(me
 logger.addHandler(handler)
 
 ### EVENTS ###
-@client.event
+@bot.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
+    print('We have logged in as {0.user}'.format(bot))
 
-@client.event
+@bot.event
 async def on_message(message):
-    if message.author == client.user:
+    if message.author == bot.user:
         return
 
     if message.content == 'man':
@@ -28,4 +29,14 @@ async def on_message(message):
     if message.content == 'my man':
         await message.channel.send(file=discord.File('pictures/myMan.jpg'))
 
-client.run(myToken)
+    if message.content:
+        print('Message from {0.author}: {0.content}'.format(message))
+            
+    await bot.process_commands(message)
+
+@bot.command()
+async def ping(ctx):
+    await ctx.send('pong')
+
+
+bot.run(myToken)
