@@ -1,10 +1,18 @@
 import discord
 import logging
+import re
+import pickle
+from collections import Counter
 from botToken import myToken
 from discord.ext import commands
-
-
+import os
+try:
+    os.mkdir("pickleJar")
+except:
+    pass
+emoteMatch = re.compile('<:.+?:\d+>')
 bot = commands.Bot(command_prefix='.')
+c = Counter()
 
 ### LOGGER ###
 logger = logging.getLogger('discord')
@@ -30,13 +38,23 @@ async def on_message(message):
         await message.channel.send(file=discord.File('pictures/myMan.jpg'))
 
     if message.content:
-        print('Message from {0.author}: {0.content}'.format(message))
-            
+        #print('{0.content} in {0.guild}'.format(message))
+        m = emoteMatch.findall('{0.content}'.format(message))
+        #print(m)
+        if m:
+            serverName = "pickleJar/"+'{0.guild}'.format(message)
+            global c
+            c += Counter(m)
+            pickle.dump(c, open(serverName, "wb"))
+            print(c)
+
     await bot.process_commands(message)
 
 @bot.command()
-async def ping(ctx):
-    await ctx.send('pong')
+async def counter(ctx):
+    serverName = "pickleJar/"+str(ctx.message.guild)
+    counterObject = pickle.load(open(serverName,"rb"))
+    await ctx.send("Most popular emotes for the server "+str(ctx.guild)+":\n"+str(counterObject))
 
 
 bot.run(myToken)
