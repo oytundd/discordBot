@@ -11,8 +11,8 @@ try:
 except:
     pass
 
-emoteMatch = re.compile("<:.+?:\d+>")
-emoteMatchid = re.compile("<:.+?:(\d+)>")
+emoteMatch = re.compile(r"<:.+?:\d+>")
+#emoteMatchid = re.compile("<:.+?:(\d+)>")
 bot = commands.Bot(command_prefix='.')
 c = Counter()
 
