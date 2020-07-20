@@ -95,6 +95,8 @@ async def icon(ctx):
 @bot.command()
 async def emotes(ctx):
     print(ctx.guild.emojis)
-
+@bot.command()
+async def latency(ctx):
+    await ctx.send(bot.latency)
 
 bot.run(myToken)
