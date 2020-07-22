@@ -66,9 +66,10 @@ async def on_message(message):
                 with open(serverName,"rb") as toRead:
                     z = pickle.load(toRead)
                     x = c + z
+                    #s = sorted(x.items(),key=lambda x:x[1])
+                
                 with open(serverName,"wb") as toWrite:
-                    mySorted = sorted(x.items(),key=lambda x:x[1])
-                    pickle.dump(mySorted,toWrite)
+                    pickle.dump(x,toWrite)
             except:
                 with open(serverName,"wb") as toWrite:
                     pickle.dump(c,toWrite)    
@@ -80,10 +81,12 @@ async def counter(ctx):
     try:
         with open(serverName,"rb") as toRead:
             counterObject = pickle.load(toRead)
+        sortedObject = counterObject.most_common(None)
+        #print(type(sortedObject))
         counterEmbed = discord.Embed(title="Emote usage for "+str(ctx.guild),color =0xE85F5C)
         counterEmbed.set_thumbnail(url=str(ctx.guild.icon_url))
-        for key in counterObject:
-            counterEmbed.add_field(name=key, value = counterObject[key],inline=True)
+        for i in range(len(sortedObject)):
+            counterEmbed.add_field(name=sortedObject[i][0], value = sortedObject[i][1],inline=True)
         await ctx.send(embed=counterEmbed)
             #await ctx.send("Most popular emotes for the server "+str(ctx.guild)+":\n"+str(counterObject))
     except Exception as e:
@@ -135,5 +138,5 @@ async def update(ctx):
 async def die(ctx):
     if ctx.author.id == 82987768711483392:
         await ctx.send("Goodbye...")
-        await bot.close()
+        bot.close()
 bot.run(myToken)
