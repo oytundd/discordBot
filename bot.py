@@ -131,4 +131,9 @@ async def update(ctx):
         await bot.close()
     else:
         await ctx.send("Unauthorized entry, will self destruct in 5 seconds.")
+@bot.command()
+async def die(ctx):
+    if ctx.author.id == 82987768711483392:
+        await ctx.send("Goodbye...")
+        bot.close()
 bot.run(myToken)
