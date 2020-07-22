@@ -9,10 +9,16 @@ import os
 import urllib.request, json
 from datetime import datetime
 import humanize
+import os, ssl
+import subprocess
 try:
     os.mkdir("pickleJar")
 except:
     pass
+
+
+if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unverified_context', None)):
+    ssl._create_default_https_context = ssl._create_unverified_context
 
 emoteMatch = re.compile(r"<:.+?:\d+>")
 #emoteMatchid = re.compile("<:.+?:(\d+)>")
@@ -111,15 +117,20 @@ async def latency(ctx):
 async def cocktail(ctx):
     with urllib.request.urlopen("https://www.thecocktaildb.com/api/json/v1/1/random.php") as url:
         cockDict = json.loads(url.read().decode())
-    cockEmbed = discord.Embed(title=cockDict['drinks'][0]['strDrink'],description=cockDict['drinks'][0]['strInstructions'],color =0xE85F5C)
+    drinkUrl = "https://www.thecocktaildb.com/drink/"+cockDict['drinks'][0]['idDrink']
+    drinkName = cockDict['drinks'][0]['strDrink']
+    drinkDesc = cockDict['drinks'][0]['strInstructions']
+    cockEmbed = discord.Embed(title=drinkName, description="["+drinkDesc+"]("+drinkUrl+")",color =0xE85F5C)
     cockEmbed.set_thumbnail(url=cockDict['drinks'][0]['strDrinkThumb'])
     cockEmbed.add_field(name='Glass Type', value= cockDict['drinks'][0]['strGlass'])
+    
+    cockEmbed.set_footer(text="Powered by thecocktaildb.com")
     for i in range(1,16,1):
         ing = 'strIngredient'+str(i)
         mes = 'strMeasure'+str(i)
         if cockDict['drinks'][0][ing] != None:
             cockEmbed.add_field(name=cockDict['drinks'][0][ing],value = cockDict['drinks'][0][mes])
-
+        
     await ctx.send(embed=cockEmbed)
 @bot.command()
 async def up(ctx):
@@ -127,5 +138,9 @@ async def up(ctx):
     upTime =  upCommandTime - launchTime
     #await ctx.send(upTime.weeks+"week(s)"+str(upTime.days)+"day(s)"+str(upTime.hours)+"hour(s)"+str(upTime.minutes))
     await ctx.send("Bot has been up for "+ humanize.naturaldelta(upTime))
-
+@bot.command()
+async def update(ctx):
+    await ctx.send("Updating...")
+    subprocess.call("updateScript.sh")
+    await bot.close()
 bot.run(myToken)
