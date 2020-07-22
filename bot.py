@@ -71,22 +71,6 @@ async def on_message(message):
             except:
                 with open(serverName,"wb") as toWrite:
                     pickle.dump(c,toWrite)    
-            """
-            file =  open(serverName, "wb+")
-            try:
-                z = pickle.load(file)
-                x = c + z
-                pickle.dump(x, file)
-                file.close()
-                print(x)
-            except EOFError:
-                pickle.dump(c,file)
-                file.close()
-                print(c)
-            """
-
-
-
     await bot.process_commands(message)
 
 @bot.command()
@@ -146,7 +130,4 @@ async def update(ctx):
         await bot.close()
     else:
         await ctx.send("Unauthorized entry, will self destruct in 5 seconds.")
-@bot.command()
-async def didupdatework(ctx):
-    await ctx.send("ye")
 bot.run(myToken)
