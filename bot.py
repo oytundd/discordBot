@@ -67,7 +67,8 @@ async def on_message(message):
                     z = pickle.load(toRead)
                     x = c + z
                 with open(serverName,"wb") as toWrite:
-                    pickle.dump(x,toWrite)
+                    mySorted = sorted(x.items(),key=lambda x:x[1])
+                    pickle.dump(mySorted,toWrite)
             except:
                 with open(serverName,"wb") as toWrite:
                     pickle.dump(c,toWrite)    
@@ -121,7 +122,7 @@ async def up(ctx):
     upCommandTime = datetime.now()
     upTime =  upCommandTime - launchTime
     #await ctx.send(upTime.weeks+"week(s)"+str(upTime.days)+"day(s)"+str(upTime.hours)+"hour(s)"+str(upTime.minutes))
-    await ctx.send("Bot has been up for "+ humanize.naturaldelta(upTime))
+    await ctx.send("I have been up for "+ humanize.naturaldelta(upTime))
 @bot.command()
 async def update(ctx):
     if ctx.author.id == 82987768711483392:
