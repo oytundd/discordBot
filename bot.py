@@ -141,7 +141,7 @@ async def up(ctx):
 @bot.command()
 async def update(ctx):
     await ctx.send("Updating...")
-    subprocess.call("updateScript.sh")
+    subprocess.call("./updateScript.sh")
     await bot.close()
 async def didupdatework(ctx):
     await ctx.send("ye")
