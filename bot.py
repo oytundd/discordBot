@@ -140,9 +140,13 @@ async def up(ctx):
     await ctx.send("Bot has been up for "+ humanize.naturaldelta(upTime))
 @bot.command()
 async def update(ctx):
-    await ctx.send("Updating...")
-    subprocess.call("./updateScript.sh")
-    await bot.close()
+    if ctx.author.id == 82987768711483392:
+        await ctx.send("Updating...")
+        subprocess.call("./updateScript.sh")
+        await bot.close()
+    else:
+        await ctx.send("Unauthorized entry, will self destruct in 5 seconds.")
+@bot.command()
 async def didupdatework(ctx):
     await ctx.send("ye")
 bot.run(myToken)
