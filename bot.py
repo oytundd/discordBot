@@ -135,5 +135,5 @@ async def update(ctx):
 async def die(ctx):
     if ctx.author.id == 82987768711483392:
         await ctx.send("Goodbye...")
-        bot.close()
+        await bot.close()
 bot.run(myToken)
