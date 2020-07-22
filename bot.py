@@ -83,7 +83,25 @@ async def counter(ctx):
             counterObject = pickle.load(toRead)
         sortedObject = counterObject.most_common(None)
         #print(type(sortedObject))
-        counterEmbed = discord.Embed(title="Emote usage for "+str(ctx.guild),color =0xE85F5C)
+        counterEmbed = discord.Embed(title="📈 - Most popular emotes for "+str(ctx.guild),color =0xE85F5C)
+        counterEmbed.set_thumbnail(url=str(ctx.guild.icon_url))
+        for i in range(len(sortedObject)):
+            counterEmbed.add_field(name=sortedObject[i][0], value = sortedObject[i][1],inline=True)
+        await ctx.send(embed=counterEmbed)
+            #await ctx.send("Most popular emotes for the server "+str(ctx.guild)+":\n"+str(counterObject))
+    except Exception as e:
+        print(e)
+        #await ctx.send("There are no recorded emotes for this server")
+@bot.command()
+async def rcounter(ctx):
+    serverName = "pickleJar/"+str(ctx.message.guild)
+    try:
+        with open(serverName,"rb") as toRead:
+            counterObject = pickle.load(toRead)
+        sortedObject = counterObject.most_common(None)
+        sortedObject.reverse()
+        #print(type(sortedObject))
+        counterEmbed = discord.Embed(title="📉 - Least popular emotes for "+str(ctx.guild),color =0xE85F5C)
         counterEmbed.set_thumbnail(url=str(ctx.guild.icon_url))
         for i in range(len(sortedObject)):
             counterEmbed.add_field(name=sortedObject[i][0], value = sortedObject[i][1],inline=True)
