@@ -17,9 +17,9 @@ try:
 except:
     pass
 
-
-if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unverified_context', None)):
-    ssl._create_default_https_context = ssl._create_unverified_context
+### REQUESTS FIX
+# if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unverified_context', None)):
+#     ssl._create_default_https_context = ssl._create_unverified_context
 
 emoteMatch = re.compile(r"<:.+?:\d+>")
 #emoteMatchid = re.compile("<:.+?:(\d+)>")
