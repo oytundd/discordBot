@@ -133,7 +133,7 @@ async def latency(ctx):
 async def cocktail(ctx):
     async with aiohttp.ClientSession() as session:
         async with session.get('https://www.thecocktaildb.com/api/json/v1/1/random.php') as url:
-            cockDict = await url.json()#json.loads(url.read().decode())
+            cockDict = await url.json() #json.loads(url.read().decode())
     # with urllib.request.urlopen("https://www.thecocktaildb.com/api/json/v1/1/random.php") as url:
     #     cockDict = json.loads(url.read().decode())
     drinkUrl = "https://www.thecocktaildb.com/drink/"+cockDict['drinks'][0]['idDrink']
