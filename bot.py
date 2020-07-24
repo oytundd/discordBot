@@ -11,6 +11,7 @@ from datetime import datetime
 import humanize
 import os, ssl
 import subprocess
+import aiohttp
 try:
     os.mkdir("pickleJar")
 except:
@@ -31,6 +32,7 @@ logger.setLevel(logging.DEBUG)
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
+### ### ###
 
 ### EVENTS ###
 @bot.event
@@ -53,8 +55,8 @@ async def on_message(message):
         await message.channel.send('https://pbs.twimg.com/media/EUwvxkQXYAA-FY9.jpg:large')
     if message.content == 'my man':
         await message.channel.send('https://pbs.twimg.com/media/EazYe-9WoAA0i9L.jpg')
-
-    if message.content:
+    
+    if message.content:#EMOTE COUNTER EMOTE RECOGNITION
         #print('{0.content} in {0.guild}'.format(message))
         m = emoteMatch.findall('{0.content}'.format(message))
         #print(m)
@@ -64,8 +66,8 @@ async def on_message(message):
             emojiIDstr = emojiIDs1[:-3]
             emojiID = int(emojiIDstr)
             emojiObject = bot.get_emoji(emojiID)
-            print(emojiID)
-            print(emojiObject)
+            #print(emojiID)
+            #print(emojiObject)
             if emojiObject.is_usable():
                 serverName = "pickleJar/"+'{0.guild}'.format(message)
                 global c
@@ -129,8 +131,11 @@ async def latency(ctx):
     await ctx.send(bot.latency)
 @bot.command()
 async def cocktail(ctx):
-    with urllib.request.urlopen("https://www.thecocktaildb.com/api/json/v1/1/random.php") as url:
-        cockDict = json.loads(url.read().decode())
+    async with aiohttp.ClientSession() as session:
+        async with session.get('https://www.thecocktaildb.com/api/json/v1/1/random.php') as url:
+            cockDict = await url.json()#json.loads(url.read().decode())
+    # with urllib.request.urlopen("https://www.thecocktaildb.com/api/json/v1/1/random.php") as url:
+    #     cockDict = json.loads(url.read().decode())
     drinkUrl = "https://www.thecocktaildb.com/drink/"+cockDict['drinks'][0]['idDrink']
     drinkName = cockDict['drinks'][0]['strDrink']
     drinkDesc = cockDict['drinks'][0]['strInstructions']
