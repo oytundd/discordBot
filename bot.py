@@ -3,7 +3,7 @@ import logging
 import re
 import pickle
 from collections import Counter
-from botToken import myToken
+import botParameters
 from discord.ext import commands
 import os
 import urllib.request, json
@@ -116,24 +116,6 @@ async def counter(ctx,arg =None):
         print(e)
         #await ctx.send("There are no recorded emotes for this server")
 @bot.command()
-async def rcounter(ctx):
-    serverName = "pickleJar/"+str(ctx.message.guild)
-    try:
-        with open(serverName,"rb") as toRead:
-            counterObject = pickle.load(toRead)
-        sortedObject = counterObject.most_common(None)
-        sortedObject.reverse()
-        #print(type(sortedObject))
-        counterEmbed = discord.Embed(title="📉 - Least popular emotes for "+str(ctx.guild),color =0xE85F5C)
-        counterEmbed.set_thumbnail(url=str(ctx.guild.icon_url))
-        for i in range(len(sortedObject)):
-            counterEmbed.add_field(name=sortedObject[i][0], value = sortedObject[i][1],inline=True)
-        await ctx.send(embed=counterEmbed)
-            #await ctx.send("Most popular emotes for the server "+str(ctx.guild)+":\n"+str(counterObject))
-    except Exception as e:
-        print(e)
-        #await ctx.send("There are no recorded emotes for this server")
-@bot.command()
 async def icon(ctx):
     await ctx.send(str(ctx.guild.icon_url))
 @bot.command()
@@ -205,6 +187,8 @@ async def up(ctx):
 @bot.command()
 async def update(ctx):
     if ctx.author.id == 82987768711483392:
+        with open("./lastServer", "w") as writeLastServer:
+            writeLastServer.write(str(ctx.guild.id))
         await ctx.send("Updating...")
         subprocess.call("./updateScript.sh")
         await bot.close()
@@ -215,4 +199,23 @@ async def die(ctx):
     if ctx.author.id == 82987768711483392:
         await ctx.send("Goodbye...")
         bot.close()
-bot.run(myToken)
+@bot.command()
+async def recipe(ctx, arg):
+    conn = aiohttp.TCPConnector(
+    family=socket.AF_INET,
+    verify_ssl=False,
+    )
+    async with aiohttp.ClientSession(connector=conn) as session:
+        async with session.get('https://api.edamam.com/search?q='+arg+'&app_id='+botParameters.edamameID+'&app_key='+botParameters.edamemeToken) as url:
+            recipeResult = await url.json() #json.loads(url.read().decode())
+            hitCount = len(recipeResult['hits'])
+            recipeEmbed = discord.Embed(title="Search results for "+arg,color =0xE85F5C)
+            for i in range(1,hitCount,1):
+                recipeEmbed.add_field(name=recipeResult['hits'][i]['label'],value=recipeResult['hits'][i]['source'])
+                
+                
+
+
+
+
+bot.run(botParameters.myToken)
