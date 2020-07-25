@@ -171,7 +171,7 @@ async def meal(ctx):
             mealDict = await url.json() #json.loads(url.read().decode())
     # with urllib.request.urlopen("https://www.thecocktaildb.com/api/json/v1/1/random.php") as url:
     #     cockDict = json.loads(url.read().decode())
-    mealUrl = "https://www.thecocktaildb.com/meal/"+mealDict['meals'][0]['idMeal']
+    mealUrl = "https://www.themealdb.com/.com/meal/"+mealDict['meals'][0]['idMeal']
     mealName = mealDict['meals'][0]['strMeal']
     mealDesc = mealDict['meals'][0]['strInstructions']
     mealEmbed = discord.Embed(title=mealName, description="["+mealDesc+"]("+mealUrl+")",color =0xE85F5C)
