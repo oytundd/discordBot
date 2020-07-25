@@ -178,7 +178,7 @@ async def meal(ctx):
     mealEmbed.set_thumbnail(url=mealDict['meals'][0]['strMealThumb'])
     mealEmbed.add_field(name='Category', value= mealDict['meals'][0]['strCategory'])
     
-    mealEmbed.set_footer(text="Powered by thethemealdb.com.com")
+    mealEmbed.set_footer(text="Powered by thethemealdb.com")
     for i in range(1,21,1):
         ing = 'strIngredient'+str(i)
         mes = 'strMeasure'+str(i)
