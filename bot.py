@@ -179,7 +179,7 @@ async def meal(ctx):
     mealEmbed.add_field(name='Category', value= mealDict['meals'][0]['strCategory'])
     
     mealEmbed.set_footer(text="Powered by thethemealdb.com.com")
-    for i in range(1,16,1):
+    for i in range(1,21,1):
         ing = 'strIngredient'+str(i)
         mes = 'strMeasure'+str(i)
         if mealDict['meals'][0][ing] != None:
