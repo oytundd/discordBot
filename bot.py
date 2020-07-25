@@ -160,6 +160,33 @@ async def cocktail(ctx):
         
     await ctx.send(embed=cockEmbed)
 @bot.command()
+async def meal(ctx):
+    ### PI PIX https://github.com/aio-libs/aiohttp/issues/2522
+    conn = aiohttp.TCPConnector(
+        family=socket.AF_INET,
+        verify_ssl=False,
+    )
+    async with aiohttp.ClientSession(connector=conn) as session:
+        async with session.get('https://www.themealdb.com/api/json/v1/1/random.php') as url:
+            mealDict = await url.json() #json.loads(url.read().decode())
+    # with urllib.request.urlopen("https://www.thecocktaildb.com/api/json/v1/1/random.php") as url:
+    #     cockDict = json.loads(url.read().decode())
+    mealUrl = "https://www.thecocktaildb.com/meal/"+mealDict['meals'][0]['idMeal']
+    mealName = mealDict['meals'][0]['strMeal']
+    mealDesc = mealDict['meals'][0]['strInstructions']
+    mealEmbed = discord.Embed(title=mealName, description="["+mealDesc+"]("+mealUrl+")",color =0xE85F5C)
+    mealEmbed.set_thumbnail(url=mealDict['meals'][0]['strMealThumb'])
+    mealEmbed.add_field(name='Category', value= mealDict['meals'][0]['strCategory'])
+    
+    mealEmbed.set_footer(text="Powered by thethemealdb.com.com")
+    for i in range(1,16,1):
+        ing = 'strIngredient'+str(i)
+        mes = 'strMeasure'+str(i)
+        if mealDict['meals'][0][ing] != None:
+            mealEmbed.add_field(name=mealDict['meals'][0][ing],value = mealDict['meals'][0][mes])
+        
+    await ctx.send(embed=mealEmbed)
+@bot.command()
 async def up(ctx):
     upCommandTime = datetime.now()
     upTime =  upCommandTime - launchTime
