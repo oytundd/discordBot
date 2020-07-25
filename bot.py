@@ -12,11 +12,18 @@ import humanize
 import os, ssl
 import subprocess
 import aiohttp
+import socket
+
 try:
     os.mkdir("pickleJar")
 except:
     pass
 
+### PI PIX https://github.com/aio-libs/aiohttp/issues/2522
+    conn = aiohttp.TCPConnector(
+        family=socket.AF_INET,
+        verify_ssl=False,
+    )
 ### REQUESTS FIX
 # if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unverified_context', None)):
 #     ssl._create_default_https_context = ssl._create_unverified_context
@@ -131,7 +138,9 @@ async def latency(ctx):
     await ctx.send(bot.latency)
 @bot.command()
 async def cocktail(ctx):
-    async with aiohttp.ClientSession() as session:
+
+    
+    async with aiohttp.ClientSession(connector=conn) as session:
         async with session.get('https://www.thecocktaildb.com/api/json/v1/1/random.php') as url:
             cockDict = await url.json() #json.loads(url.read().decode())
     # with urllib.request.urlopen("https://www.thecocktaildb.com/api/json/v1/1/random.php") as url:
