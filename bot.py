@@ -206,12 +206,22 @@ async def recipe(ctx, arg):
     verify_ssl=False,
     )
     async with aiohttp.ClientSession(connector=conn) as session:
-        async with session.get('https://api.edamam.com/search?q='+arg+'&app_id='+botParameters.edamameID+'&app_key='+botParameters.edamemeToken) as url:
+        getVar = 'https://api.edamam.com/search?q='+arg+'&app_id='+botParameters.edamameID+'&app_key='+botParameters.edamemeToken+'&from=0&to=100'
+        print(getVar)
+        async with session.get(getVar) as url:
             recipeResult = await url.json() #json.loads(url.read().decode())
-            hitCount = len(recipeResult['hits'])
+            if recipeResult:
+                print('hit!')
             recipeEmbed = discord.Embed(title="Search results for "+arg,color =0xE85F5C)
-            for i in range(1,hitCount,1):
-                recipeEmbed.add_field(name=recipeResult['hits'][i]['label'],value=recipeResult['hits'][i]['source'])
+            #for i in range(1,hitCount,1):
+            for i in range(len(recipeResult['hits'])):
+                recipeUrl       =recipeResult['hits'][i]['recipe']['url']
+                recipeSource    =recipeResult['hits'][i]['recipe']['source']
+                recipeEmbed.add_field(name=recipeResult['hits'][i]['recipe']['label'],value="["+recipeSource+"]("+recipeUrl+")")
+                if i > 25:
+                    break
+            recipeEmbed.set_footer(text=str(len(recipeResult['hits']))+'results found.')
+            await ctx.send(embed=recipeEmbed)
                 
                 
 
