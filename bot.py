@@ -89,7 +89,7 @@ async def on_message(message):
     await bot.process_commands(message)
 
 @bot.command()
-async def counter(ctx,arg):
+async def counter(ctx,arg =None):
     serverName = "pickleJar/"+str(ctx.message.guild)
     try:
         with open(serverName,"rb") as toRead:
