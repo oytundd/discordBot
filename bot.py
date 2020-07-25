@@ -182,7 +182,7 @@ async def meal(ctx):
     for i in range(1,21,1):
         ing = 'strIngredient'+str(i)
         mes = 'strMeasure'+str(i)
-        if mealDict['meals'][0][ing] != None:
+        if mealDict['meals'][0][ing]:
             mealEmbed.add_field(name=mealDict['meals'][0][ing],value = mealDict['meals'][0][mes])
         
     await ctx.send(embed=mealEmbed)
