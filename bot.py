@@ -200,7 +200,7 @@ async def die(ctx):
         await ctx.send("Goodbye...")
         bot.close()
 @bot.command()
-async def recipe(ctx, arg):
+async def recipe(ctx, *, arg):
     conn = aiohttp.TCPConnector(
     family=socket.AF_INET,
     verify_ssl=False,
