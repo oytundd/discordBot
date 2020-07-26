@@ -212,7 +212,7 @@ async def recipe(ctx, arg):
             recipeResult = await url.json() #json.loads(url.read().decode())
             if recipeResult:
                 print('hit!')
-            recipeEmbed = discord.Embed(title=str(len(recipeResult['hits']))+'results were found for'+arg,color =0xE85F5C)
+            recipeEmbed = discord.Embed(title=str(len(recipeResult['hits']))+' results were found for '+arg,color =0xE85F5C)
             #for i in range(1,hitCount,1):
             for i in range(len(recipeResult['hits'])):
                 recipeUrl       =recipeResult['hits'][i]['recipe']['url']
