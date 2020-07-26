@@ -13,7 +13,10 @@ import os, ssl
 import subprocess
 import aiohttp
 import socket
-
+try:
+    import lastServer
+except:
+    pass
 try:
     os.mkdir("pickleJar")
 except:
@@ -41,6 +44,11 @@ logger.addHandler(handler)
 @bot.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
+    try:
+            lastChannel = bot.get_channel(lastServer.channelId)
+            await lastChannel.send("Live!")
+    except:
+        pass
     global launchTime
     launchTime = datetime.now()
     
@@ -187,8 +195,8 @@ async def up(ctx):
 @bot.command()
 async def update(ctx):
     if ctx.author.id == 82987768711483392:
-        with open("./lastServer", "w") as writeLastServer:
-            writeLastServer.write(str(ctx.guild.id))
+        with open("lastServer.py", "w+") as writeLastServer:
+            writeLastServer.write("guildId = "+str(ctx.guild.id)+"\nchannelId="+str(ctx.channel.id) )
         await ctx.send("Updating...")
         subprocess.call("./updateScript.sh")
         await bot.close()
