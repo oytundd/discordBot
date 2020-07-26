@@ -212,7 +212,7 @@ async def recipe(ctx, arg):
             recipeResult = await url.json() #json.loads(url.read().decode())
             if recipeResult:
                 print('hit!')
-            recipeEmbed = discord.Embed(title="Search results for "+arg,color =0xE85F5C)
+            recipeEmbed = discord.Embed(title=str(len(recipeResult['hits']))+'results were found for'+arg,color =0xE85F5C)
             #for i in range(1,hitCount,1):
             for i in range(len(recipeResult['hits'])):
                 recipeUrl       =recipeResult['hits'][i]['recipe']['url']
@@ -220,7 +220,7 @@ async def recipe(ctx, arg):
                 recipeEmbed.add_field(name=recipeResult['hits'][i]['recipe']['label'],value="["+recipeSource+"]("+recipeUrl+")")
                 if i > 25:
                     break
-            recipeEmbed.set_footer(text=str(len(recipeResult['hits']))+'results found.')
+            recipeEmbed.set_footer(text="Powered by edamam.com")
             await ctx.send(embed=recipeEmbed)
                 
                 
