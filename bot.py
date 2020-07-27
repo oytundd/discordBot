@@ -13,6 +13,7 @@ import os, ssl
 import subprocess
 import aiohttp
 import socket
+import asyncio
 try:
     import lastServer
 except:
@@ -64,9 +65,16 @@ async def on_message(message):
 
     if message.content == 'horse':
         await message.channel.send('https://pbs.twimg.com/media/EUwvxkQXYAA-FY9.jpg:large')
+
     if message.content == 'my man':
         await message.channel.send('https://pbs.twimg.com/media/EazYe-9WoAA0i9L.jpg')
-    
+
+    if message.content == 'maz':
+        await message.channel.send('mez')
+
+    if message.content == 'mez':
+        await message.channel.send('maz')
+
     if message.content:#EMOTE COUNTER EMOTE RECOGNITION
         #print('{0.content} in {0.guild}'.format(message))
         m = emoteMatch.findall('{0.content}'.format(message))
@@ -119,6 +127,8 @@ async def counter(ctx,arg =None):
             for i in range(len(sortedObject)):
                 counterEmbed.add_field(name=sortedObject[i][0], value = sortedObject[i][1],inline=True)
             await ctx.send(embed=counterEmbed)
+
+            
                 #await ctx.send("Most popular emotes for the server "+str(ctx.guild)+":\n"+str(counterObject))
     except Exception as e:
         print(e)
@@ -229,7 +239,15 @@ async def recipe(ctx, *, arg):
                 if i > 25:
                     break
             recipeEmbed.set_footer(text="Powered by edamam.com")
-            await ctx.send(embed=recipeEmbed)
+            myMessage = await ctx.send(embed=recipeEmbed)
+            await myMessage.add_reaction('⬅️')
+            await myMessage.add_reaction('➡️')
+    
+            
+
+
+            # await myMessage.add_reaction('\U00002b05\U0000fe0f')
+            # await myMessage.add_reaction('\U000027a1\U0000fe0f')
                 
                 
 
