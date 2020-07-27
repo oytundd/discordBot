@@ -69,9 +69,6 @@ async def on_message(message):
     if message.content == 'my man':
         await message.channel.send('https://pbs.twimg.com/media/EazYe-9WoAA0i9L.jpg')
 
-    if message.content == 'maz':
-        await message.channel.send('mez')
-
     if message.content == 'mez':
         await message.channel.send('maz')
 
