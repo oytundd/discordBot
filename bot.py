@@ -74,8 +74,8 @@ async def on_message(message):
     if message.content == 'mez':
         await message.channel.send('maz')
     if message.content:
-        tempMsgList.append(message.content)
-        if tempMsgList[0] == tempMsgList [1]:
+        tempMsgList.append(message)
+        if tempMsgList[0].content == tempMsgList [1].content and tempMsgList[0].author != tempMsgList[1].author:
             await message.channel.send(message.content)
             tempMsgList.clear()
         if len(tempMsgList) == 2:
