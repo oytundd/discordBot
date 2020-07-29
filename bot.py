@@ -71,8 +71,6 @@ async def on_message(message):
     if message.content == 'my man':
         await message.channel.send('https://pbs.twimg.com/media/EazYe-9WoAA0i9L.jpg')
 
-    if message.content == 'mez':
-        await message.channel.send('maz')
     if message.content:
         tempMsgList.append(message)
         if tempMsgList[0].content == tempMsgList [1].content and tempMsgList[0].author != tempMsgList[1].author:
