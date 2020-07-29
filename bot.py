@@ -77,6 +77,7 @@ async def on_message(message):
         tempMsgList.append(message.content)
         if tempMsgList[0] == tempMsgList [1]:
             await message.channel.send(message.content)
+            tempMsgList.clear()
         if len(tempMsgList) == 2:
             tempMsgList.pop(0)
 
