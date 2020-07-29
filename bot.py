@@ -14,6 +14,8 @@ import subprocess
 import aiohttp
 import socket
 import asyncio
+tempMsgSwitch = True
+tempMsgList = []
 try:
     import lastServer
 except:
@@ -71,6 +73,13 @@ async def on_message(message):
 
     if message.content == 'mez':
         await message.channel.send('maz')
+    if message.content:
+        tempMsgList.append(message.content)
+        if tempMsgList[0] == tempMsgList [1]:
+            await message.channel.send(message.content)
+        if len(tempMsgList) == 2:
+            tempMsgList.pop(0)
+
 
     if message.content:#EMOTE COUNTER EMOTE RECOGNITION
         #print('{0.content} in {0.guild}'.format(message))
