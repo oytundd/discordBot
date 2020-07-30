@@ -73,10 +73,10 @@ async def on_message(message):
 
     if message.content:
         tempMsgList.append(message)
-        if tempMsgList[0].content == tempMsgList [1].content and tempMsgList[0].author != tempMsgList[1].author:
+        if tempMsgList[0].content == tempMsgList [1].content and tempMsgList[1].content == tempMsgList [2].content and tempMsgList[0].author != tempMsgList[1].author and tempMsgList[1].author != tempMsgList[2].author  and tempMsgList[0].author != tempMsgList[2].author:
             await message.channel.send(message.content)
             tempMsgList.clear()
-        if len(tempMsgList) == 2:
+        if len(tempMsgList) == 3:
             tempMsgList.pop(0)
 
 
