@@ -71,12 +71,13 @@ async def on_message(message):
     if message.content == 'my man':
         await message.channel.send('https://pbs.twimg.com/media/EazYe-9WoAA0i9L.jpg')
 
-    if message.content:
+    if message.content:#
         tempMsgList.append(message)
         if tempMsgList[0].content == tempMsgList [1].content and tempMsgList[1].content == tempMsgList [2].content and tempMsgList[0].author != tempMsgList[1].author and tempMsgList[1].author != tempMsgList[2].author  and tempMsgList[0].author != tempMsgList[2].author:
-            await message.channel.send(message.content)
             tempMsgList.clear()
-        if len(tempMsgList) == 3:
+            await message.channel.send(message.content)
+    
+        elif len(tempMsgList) >= 3:
             tempMsgList.pop(0)
 
 
