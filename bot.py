@@ -48,8 +48,8 @@ logger.addHandler(handler)
 async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
     try:
-            lastChannel = bot.get_channel(lastServer.channelId)
-            await lastChannel.send("Live!")
+        lastChannel = bot.get_channel(lastServer.channelId)
+        await lastChannel.send("Live!")
     except:
         pass
     global launchTime
@@ -86,28 +86,29 @@ async def on_message(message):
         m = emoteMatch.findall('{0.content}'.format(message))
         #print(m)
         if m:
-            emojiIDs0 = str(m)
-            emojiIDs1 = emojiIDs0[-21:] 
-            emojiIDstr = emojiIDs1[:-3]
-            emojiID = int(emojiIDstr)
-            emojiObject = bot.get_emoji(emojiID)
-            #print(emojiID)
-            #print(emojiObject)
-            if emojiObject.is_usable():
-                serverName = "pickleJar/"+'{0.guild}'.format(message)
-                global c
-                c = Counter(m)
-                try:
-                    with open(serverName,"rb") as toRead:
-                        z = pickle.load(toRead)
-                        x = c + z
-                        #s = sorted(x.items(),key=lambda x:x[1])
-                    
-                    with open(serverName,"wb") as toWrite:
-                        pickle.dump(x,toWrite)
-                except:
-                    with open(serverName,"wb") as toWrite:
-                        pickle.dump(c,toWrite)    
+            for emotes in m:
+                emojiIDs0 = str(m)
+                emojiIDs1 = emojiIDs0[-21:] 
+                emojiIDstr = emojiIDs1[:-3]
+                emojiID = int(emojiIDstr)
+                emojiObject = bot.get_emoji(emojiID)
+                #print(emojiID)
+                #print(emojiObject)
+                if emojiObject.is_usable():
+                    serverName = "pickleJar/"+'{0.guild}'.format(message)
+                    global c
+                    c = Counter(m)
+                    try:
+                        with open(serverName,"rb") as toRead:
+                            z = pickle.load(toRead)
+                            x = c + z
+                            #s = sorted(x.items(),key=lambda x:x[1])
+                        
+                        with open(serverName,"wb") as toWrite:
+                            pickle.dump(x,toWrite)
+                    except:
+                        with open(serverName,"wb") as toWrite:
+                            pickle.dump(c,toWrite)    
     await bot.process_commands(message)
 
 @bot.command()
@@ -246,8 +247,8 @@ async def recipe(ctx, *, arg):
                     break
             recipeEmbed.set_footer(text="Powered by edamam.com")
             myMessage = await ctx.send(embed=recipeEmbed)
-            await myMessage.add_reaction('⬅️')
-            await myMessage.add_reaction('➡️')
+            #await myMessage.add_reaction('⬅️')
+            #await myMessage.add_reaction('➡️')
     
             
 
