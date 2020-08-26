@@ -86,8 +86,8 @@ async def on_message(message):
         m = emoteMatch.findall('{0.content}'.format(message))
         #print(m)
         if m:
-            for emotes in m:
-                emojiIDs0 = str(m)
+            for emoteInMessage in m:
+                emojiIDs0 = str(emoteInMessage)
                 emojiIDs1 = emojiIDs0[-21:] 
                 emojiIDstr = emojiIDs1[:-3]
                 emojiID = int(emojiIDstr)
@@ -97,7 +97,7 @@ async def on_message(message):
                 if emojiObject.is_usable():
                     serverName = "pickleJar/"+'{0.guild}'.format(message)
                     global c
-                    c = Counter(m)
+                    c = Counter(emoteInMessage)
                     try:
                         with open(serverName,"rb") as toRead:
                             z = pickle.load(toRead)
