@@ -14,6 +14,7 @@ import subprocess
 import aiohttp
 import socket
 import asyncio
+import json
 tempMsgSwitch = True
 tempMsgList = []
 try:
@@ -80,35 +81,49 @@ async def on_message(message):
         elif len(tempMsgList) >= 3:
             tempMsgList.pop(0)
 
-
+        """
     if message.content:#EMOTE COUNTER EMOTE RECOGNITION
         #print('{0.content} in {0.guild}'.format(message))
         m = emoteMatch.findall('{0.content}'.format(message))
         #print(m)
         if m:
             for emoteInMessage in m:
+                print(emoteInMessage)
                 emojiIDs0 = str(emoteInMessage)
-                emojiIDs1 = emojiIDs0[-21:] 
-                emojiIDstr = emojiIDs1[:-3]
+                emojiIDs1 = emojiIDs0[-19:] 
+                emojiIDstr = emojiIDs1[:-1]
+                print(emojiIDstr)
                 emojiID = int(emojiIDstr)
                 emojiObject = bot.get_emoji(emojiID)
                 #print(emojiID)
                 #print(emojiObject)
                 if emojiObject.is_usable():
                     serverName = "pickleJar/"+'{0.guild}'.format(message)
-                    global c
-                    c = Counter(emoteInMessage)
+                    print(emojiObject)
+                    try:
+                        with open(serverName,"rb") as outfile:
+                            json.dump(emojiObject,outfile)
+                    except:
+                        with open(serverName,"wb") as outfile:
+                            json.dump(emojiObject,outfile)
+                
+                    serverName = "pickleJar/"+'{0.guild}'.format(message)
+                    #global c
+                  
                     try:
                         with open(serverName,"rb") as toRead:
                             z = pickle.load(toRead)
-                            x = c + z
+                            x = emojiObject + z
                             #s = sorted(x.items(),key=lambda x:x[1])
                         
                         with open(serverName,"wb") as toWrite:
                             pickle.dump(x,toWrite)
                     except:
                         with open(serverName,"wb") as toWrite:
-                            pickle.dump(c,toWrite)    
+                            pickle.dump(c,toWrite)     """
+                    
+
+                   
     await bot.process_commands(message)
 
 @bot.command()
